@@ -1,4 +1,5 @@
 -- TABLAS
+-- Se crean todas las tablas a partir del modelo realizado.
 
 -- Crea la tabla Aeropuerto
 
