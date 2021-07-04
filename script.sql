@@ -1,4 +1,7 @@
 -- TABLE
+
+-- Crea la tabla Aeropuerto
+
 CREATE TABLE Aeropuerto(
 
 idAeropuerto INT,
@@ -7,6 +10,9 @@ ciudad varchar(50),
 direccion varchar(50),
 constraint pk_ae primary key (idAeropuerto)
 );
+
+-- Crea la tabla Avion
+
 CREATE TABLE Avion(
 
 idAvion INT,
@@ -16,6 +22,9 @@ fkEmpresa INT,
 constraint pk_Av primary key (idAvion),
 constraint fk_av foreign key(fkEmpresa) references Empresa(idEmpresa)
 );
+
+-- Crea la tabla Cliente
+
 CREATE TABLE Cliente(
 
 id INT,
@@ -25,6 +34,9 @@ email VARCHAR(50),
 constraint pk_c primary key (id)
 
 );
+
+-- Crea la tabla Empresa
+
 CREATE TABLE Empresa(
 
 idEmpresa INT,
@@ -33,6 +45,9 @@ telefono INT,
 paginaWeb varchar(50),
 constraint pk_E primary key (idEmpresa)
 );
+
+-- Crea la tabla Empresa_Aeropuerto
+
 CREATE TABLE Empresa_Aeropuerto(
 
 idEmpresa_Aeropuerto INT,
@@ -42,6 +57,9 @@ constraint pk_t primary key (idEmpresa_Aeropuerto),
 constraint fk_av foreign key(fkAero) references Empresa(idempresa),
 constraint fk_av foreign key(fkEmpre) references Aeropuerto(idaeropuerto)
 );
+
+-- Crea la tabla Tiquetes
+
 CREATE TABLE Tiquetes(
 
 idTiquete INT,
@@ -55,6 +73,9 @@ constraint pk_t primary key (idTiquete),
 constraint fk_av foreign key(fkVuelo) references Vuelo(idVuelo),
 constraint fk_av foreign key(fkCliente) references Cliente(id)
 );
+
+-- Crea la tabla Vuelo
+
 CREATE TABLE Vuelo(
 
 idVuelo INT,
@@ -69,9 +90,60 @@ constraint fk_epr foreign key(fkEmpresa) references Empresa(idEmpresa)
 
 );
  
--- INDEX
+-- ACTUALIZAR FILAS
+
+UPDATE Vuelo set capacidad=582 where idvuelo=147;
+
+UPDATE Tiquetes set valor=4800 where idtiquete=963;
+
+UPDATE Tiquetes set valor=3000 where idtiquete=147;
+
+delete from Vuelo where  idTiquete=963;
+
  
--- TRIGGER
+-- Consultas
  
--- VIEW
- 
+--Condicionales y Operadores
+
+SELECT nombre,email from Cliente;
+
+--Limite
+
+SELECT * from Vuelo LIMIT 4;
+SELECT * from Vuelo LIMIT 2,5;
+SELECT modelo from Avion where capacidad>100;
+
+--CONTADOR
+Select count (idTiquete) AS Cantidad, clase from Tiquetes  group by clase;
+Select count (idvuelo) AS TOTAL, capacidad from Vuelo WHERE capacidad>100 group by capacidad;
+
+--MIN & MAX
+
+Select MIN(capacidad) as capacidad_minima, MAX(capacidad) AS capacidad_minima from Vuelo;
+
+--ORDENAR
+
+Select * from tiquetes order by clase asc;
+Select * from Vuelo order by idvuelo DESC;
+Select * from Vuelo order by idvuelo DESC,capacidad ASC;
+
+
+Select * from Cliente where nombre is not null;
+
+Select * from Tiquetes where valor between 100000 and 300000;
+
+Select * from Tiquetes where clase like 'alta';
+
+Select * from Tiquetes, Vuelo where fkvuelo=idvuelo;
+
+Select * from Tiquetes as te INNER JOIN Vuelo as ve on te.fkvuelo=ve.idvuelo;
+
+Select te.idtiquete, te.clase from Tiquetes as te INNER JOIN Vuelo as ve on te.fkvuelo=ve.idvuelo where ve.capacidad>100;
+
+Select te.idtiquete, te.clase, ve.hora from Tiquetes as te LEFT JOIN Vuelo as ve on te.fkvuelo=ve.idvuelo;
+
+SELECT cl.nombre, cl.email from Cliente as cl INNER JOIN Tiquetes as ti ON ti.fkCliente=cl.id INNER JOIN Vuelo as vu ON ti.fkVuelo=vu.idVuelo;
+
+SELECT av.modelo, av.capacidad from Avion as av INNER JOIN Empresa as em ON av.fkEmpresa=em.idEmpresa INNER JOIN Vuelo as vu ON em.idEmpresa=vu.fkEmpresa;
+select * from Avion union select * from Aeropuerto;
+
