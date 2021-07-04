@@ -1,4 +1,4 @@
--- TABLE
+-- TABLAS
 
 -- Crea la tabla Aeropuerto
 
@@ -127,14 +127,19 @@ Select * from tiquetes order by clase asc;
 Select * from Vuelo order by idvuelo DESC;
 Select * from Vuelo order by idvuelo DESC,capacidad ASC;
 
-
+-- Consulta sobre valores que no sean nulos
 Select * from Cliente where nombre is not null;
 
+-- Consulta de valores entre dos rangos
 Select * from Tiquetes where valor between 100000 and 300000;
 
+-- Consulta like para buscar una cadena especifica 
 Select * from Tiquetes where clase like 'alta';
 
+
 Select * from Tiquetes, Vuelo where fkvuelo=idvuelo;
+
+--Consultas con INNER JOIN Y LEFT JOIN ENTRE MULTIPLES TABLAS
 
 Select * from Tiquetes as te INNER JOIN Vuelo as ve on te.fkvuelo=ve.idvuelo;
 
@@ -145,5 +150,8 @@ Select te.idtiquete, te.clase, ve.hora from Tiquetes as te LEFT JOIN Vuelo as ve
 SELECT cl.nombre, cl.email from Cliente as cl INNER JOIN Tiquetes as ti ON ti.fkCliente=cl.id INNER JOIN Vuelo as vu ON ti.fkVuelo=vu.idVuelo;
 
 SELECT av.modelo, av.capacidad from Avion as av INNER JOIN Empresa as em ON av.fkEmpresa=em.idEmpresa INNER JOIN Vuelo as vu ON em.idEmpresa=vu.fkEmpresa;
+
+--Consulta donde se unen dos consultas
+
 select * from Avion union select * from Aeropuerto;
 
